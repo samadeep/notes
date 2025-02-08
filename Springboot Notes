@@ -424,4 +424,538 @@
 <li><strong>Function</strong>: Can be placed on the class or method level to specify the path, HTTP method, media types, headers, etc.</li>
 <li><strong>Key Point</strong>: Very flexible; can specify complex routing rules, but typically replaced in many use cases by  <code>@GetMapping</code>,  <code>@PostMapping</code>, etc., for readability.</li>
 </ul>
+<h3 id="other-annotations">Other Annotations</h3>
+<p>Below is a  <strong>comprehensive overview</strong>  of other key annotations you may encounter in the  <strong>controller layer</strong>  when building web applications with Spring Boot and Spring MVC. While some of these annotations were introduced in earlier versions of Spring (pre-Spring Boot), they remain highly relevant in modern Spring Boot applications. We’ll group them into categories for clarity:</p>
+<hr>
+<h2 id="http-method-mapping-annotations">1. HTTP Method Mapping Annotations</h2>
+<p>These annotations are  <strong>specializations</strong>  of  <code>@RequestMapping</code>  introduced in Spring 4.3. They make your code more expressive by clarifying which HTTP method is in use:</p>
+<ol>
+<li>
+<p><strong>@GetMapping</strong></p>
+<ul>
+<li>
+<p>Shortcut for  <code>@RequestMapping(method = RequestMethod.GET)</code>.</p>
+</li>
+<li>
+<p>Typical usage:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/users"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> List<span class="token operator">&lt;</span>User<span class="token operator">&gt;</span> <span class="token function">getAllUsers</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@PostMapping</strong></p>
+<ul>
+<li>
+<p>Shortcut for  <code>@RequestMapping(method = RequestMethod.POST)</code>.</p>
+</li>
+<li>
+<p>Typical usage:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">"/users"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> User <span class="token function">createUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestBody</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@PutMapping</strong></p>
+<ul>
+<li>
+<p>Shortcut for  <code>@RequestMapping(method = RequestMethod.PUT)</code>.</p>
+</li>
+<li>
+<p>Typical usage:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@PutMapping</span><span class="token punctuation">(</span><span class="token string">"/users/{id}"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> User <span class="token function">updateUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@PathVariable</span> Long id<span class="token punctuation">,</span> <span class="token annotation punctuation">@RequestBody</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@DeleteMapping</strong></p>
+<ul>
+<li>
+<p>Shortcut for  <code>@RequestMapping(method = RequestMethod.DELETE)</code>.</p>
+</li>
+<li>
+<p>Typical usage:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@DeleteMapping</span><span class="token punctuation">(</span><span class="token string">"/users/{id}"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">deleteUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@PathVariable</span> Long id<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@PatchMapping</strong></p>
+<ul>
+<li>
+<p>Shortcut for  <code>@RequestMapping(method = RequestMethod.PATCH)</code>.</p>
+</li>
+<li>
+<p>Typical usage:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@PatchMapping</span><span class="token punctuation">(</span><span class="token string">"/users/{id}"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> User <span class="token function">partiallyUpdateUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@PathVariable</span> Long id<span class="token punctuation">,</span> <span class="token annotation punctuation">@RequestBody</span> Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Object<span class="token operator">&gt;</span> updates<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<p>Just like  <code>@RequestMapping</code>, these can also specify attributes like  <code>consumes</code>  (the content type the method can handle) and  <code>produces</code>  (the content type it returns), etc.</p>
+<hr>
+<h2 id="parameter-binding-annotations">2. Parameter Binding Annotations</h2>
+<p>These annotations help Spring map parts of the HTTP request (query parameters, headers, path variables, body content, etc.) to controller method parameters.</p>
+<ol>
+<li>
+<p><strong>@RequestParam</strong></p>
+<ul>
+<li>
+<p>Binds HTTP  <strong>query parameters</strong>  (or form data) to a method parameter.</p>
+</li>
+<li>
+<p>Typical usage:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/search"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> String <span class="token function">search</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestParam</span> String keyword<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+<li>
+<p>Can specify  <code>required</code>,  <code>defaultValue</code>, etc.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@PathVariable</strong></p>
+<ul>
+<li>
+<p>Binds a  <strong>path segment</strong>  in the URL to a method parameter.</p>
+</li>
+<li>
+<p>The name in the annotation should match the placeholder in the mapping.</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/users/{id}"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> User <span class="token function">getUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@PathVariable</span> Long id<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@RequestBody</strong></p>
+<ul>
+<li>
+<p>Binds the  <strong>HTTP request body</strong>  to a method parameter, typically converting JSON → object.</p>
+</li>
+<li>
+<p>Often used for  <strong>POST</strong>,  <strong>PUT</strong>,  <strong>PATCH</strong>  endpoints in RESTful services.</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">"/users"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> User <span class="token function">createUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestBody</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@RequestHeader</strong></p>
+<ul>
+<li>
+<p>Binds a specific HTTP  <strong>header</strong>  to a method parameter.</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/info"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> Info <span class="token function">getInfo</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestHeader</span><span class="token punctuation">(</span><span class="token string">"User-Agent"</span><span class="token punctuation">)</span> String userAgent<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@CookieValue</strong></p>
+<ul>
+<li>
+<p>Binds the value of an  <strong>HTTP cookie</strong>  to a method parameter.</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/showCookie"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> String <span class="token function">showCookie</span><span class="token punctuation">(</span><span class="token annotation punctuation">@CookieValue</span><span class="token punctuation">(</span><span class="token string">"sessionId"</span><span class="token punctuation">)</span> String sessionId<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@RequestPart</strong></p>
+<ul>
+<li>
+<p>Used for  <strong>multipart</strong>  requests, binding a part of the multi-part request (like a file) to a method parameter.</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"/upload"</span><span class="token punctuation">,</span> consumes <span class="token operator">=</span> MediaType<span class="token punctuation">.</span>MULTIPART_FORM_DATA_VALUE<span class="token punctuation">)</span>
+<span class="token keyword">public</span> String <span class="token function">handleFileUpload</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestPart</span><span class="token punctuation">(</span><span class="token string">"file"</span><span class="token punctuation">)</span> MultipartFile file<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@MatrixVariable</strong></p>
+<ul>
+<li>
+<p>Binds a  <strong>matrix variable</strong>  in the URL to a method parameter (less common).</p>
+</li>
+<li>
+<p>Matrix variables are of the form  <code>/path;var=value;another=val</code>.</p>
+</li>
+<li>
+<p>You must enable them by setting  <code>setRemoveSemicolonContent(false)</code>  in your  <code>RequestMappingHandlerMapping</code>  config if you want them.</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/products/{productId}"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> String <span class="token function">getProduct</span><span class="token punctuation">(</span>
+   <span class="token annotation punctuation">@PathVariable</span> String productId<span class="token punctuation">,</span>
+   <span class="token annotation punctuation">@MatrixVariable</span><span class="token punctuation">(</span>pathVar<span class="token operator">=</span><span class="token string">"productId"</span><span class="token punctuation">)</span> Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> String<span class="token operator">&gt;</span> matrixVars
+<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@RequestAttribute</strong></p>
+<ul>
+<li>
+<p>Binds an  <strong>attribute</strong>  from the  <code>ServletRequest</code>  to a method parameter.</p>
+</li>
+<li>
+<p>Different from  <code>@RequestParam</code>, as it deals with request-scoped attributes set by filters or interceptors.</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/doSomething"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> String <span class="token function">doSomething</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestAttribute</span><span class="token punctuation">(</span><span class="token string">"myAttr"</span><span class="token punctuation">)</span> String value<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="model-and-session-annotations">3. Model and Session Annotations</h2>
+<p>These annotations deal with managing data across controller methods, views, or sessions.</p>
+<ol>
+<li>
+<p><strong>@ModelAttribute</strong></p>
+<ul>
+<li>
+<p>Populates a model attribute (for use in a view) or binds form data to a model object.</p>
+</li>
+<li>
+<p>At the  <strong>method level</strong>, it can add attributes to the model for every request in the controller.</p>
+</li>
+<li>
+<p>At the  <strong>parameter level</strong>, it binds form data to an object.</p>
+</li>
+<li>
+<p>Example (method-level):</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@ModelAttribute</span><span class="token punctuation">(</span><span class="token string">"countries"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> List<span class="token operator">&lt;</span>String<span class="token operator">&gt;</span> <span class="token function">populateCountries</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> List<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token string">"USA"</span><span class="token punctuation">,</span> <span class="token string">"UK"</span><span class="token punctuation">,</span> <span class="token string">"Canada"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+<li>
+<p>Example (parameter-level):</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">"/register"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> String <span class="token function">registerUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@ModelAttribute</span> UserForm userForm<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@SessionAttributes</strong></p>
+<ul>
+<li>
+<p>Declares  <strong>session-scoped attributes</strong>  at the  <strong>type (class) level</strong>  of a controller.</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@Controller</span>
+<span class="token annotation punctuation">@SessionAttributes</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserController</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+<li>
+<p>Any model attribute named  <code>"user"</code>  in this controller is automatically stored in the HTTP session.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@SessionAttribute</strong></p>
+<ul>
+<li>
+<p>At the  <strong>method parameter</strong>  level, retrieves an existing attribute from the HTTP session.</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/profile"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> String <span class="token function">profile</span><span class="token punctuation">(</span><span class="token annotation punctuation">@SessionAttribute</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="response-handling-annotations">4. Response Handling Annotations</h2>
+<ol>
+<li>
+<p><strong>@ResponseBody</strong></p>
+<ul>
+<li>
+<p>Indicates that the  <strong>return value</strong>  of a controller method  <strong>is written directly</strong>  to the HTTP response body (rather than being interpreted as a view name).</p>
+</li>
+<li>
+<p>Already included in  <code>@RestController</code>, but in a  <code>@Controller</code>  class, you can use  <code>@ResponseBody</code>  at the method level.</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyController</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@ResponseBody</span>
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/api/data"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> Data <span class="token function">getData</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@ResponseStatus</strong></p>
+<ul>
+<li>
+<p>Declares the  <strong>HTTP status code</strong>  that a method should return if it completes normally (i.e., no exception is thrown).</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@ResponseStatus</span><span class="token punctuation">(</span>HttpStatus<span class="token punctuation">.</span>CREATED<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">"/users"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> User <span class="token function">createUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestBody</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@CrossOrigin</strong></p>
+<ul>
+<li>
+<p>Enables  <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS (Cross-Origin Resource Sharing)</a>  for a method or an entire controller.</p>
+</li>
+<li>
+<p>Commonly used in RESTful APIs when the frontend is served from a different domain/port.</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@CrossOrigin</span><span class="token punctuation">(</span>origins <span class="token operator">=</span> <span class="token string">"http://example.com"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@RestController</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyApiController</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/items"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> List<span class="token operator">&lt;</span>Item<span class="token operator">&gt;</span> <span class="token function">getItems</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="exception-handling-annotations">5. Exception Handling Annotations</h2>
+<p>These annotations let you handle exceptions at the controller (or global) level.</p>
+<ol>
+<li>
+<p><strong>@ExceptionHandler</strong></p>
+<ul>
+<li>
+<p>Placed on a  <strong>method</strong>  within a  <code>@Controller</code>  or  <code>@ControllerAdvice</code>  class to handle specific exceptions thrown within that controller’s request processing.</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyController</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@ExceptionHandler</span><span class="token punctuation">(</span>SomeException<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> String <span class="token function">handleSomeException</span><span class="token punctuation">(</span>SomeException ex<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// handle exception, return a view name or ResponseEntity</span>
+        <span class="token keyword">return</span> <span class="token string">"error"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@ControllerAdvice</strong></p>
+<ul>
+<li>
+<p>A  <strong>class-level</strong>  annotation that indicates the class will  <strong>apply its  <code>@ExceptionHandler</code>  methods</strong>  (and other model-related methods) to all controllers globally (or to specific packages/classes if configured).</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@ControllerAdvice</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GlobalExceptionHandler</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@ExceptionHandler</span><span class="token punctuation">(</span>SomeException<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> ResponseEntity<span class="token operator">&lt;</span>String<span class="token operator">&gt;</span> <span class="token function">handleSomeException</span><span class="token punctuation">(</span>SomeException ex<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>@RestControllerAdvice</strong></p>
+<ul>
+<li>A variant of  <code>@ControllerAdvice</code>  that  <strong>combines  <code>@ControllerAdvice</code>  +  <code>@ResponseBody</code></strong>.</li>
+<li>Suitable for global exception handling in REST APIs (returning JSON).</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="data-binding-and-initialization-annotations">6. Data Binding and Initialization Annotations</h2>
+<ol>
+<li><strong>@InitBinder</strong>
+<ul>
+<li>
+<p>Method-level annotation in a controller to  <strong>configure or initialize data binders</strong>  for web request parameters. This can control how data is converted or validated before methods are invoked.</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@Controller</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ProductController</span> <span class="token punctuation">{</span>
+    
+    <span class="token annotation punctuation">@InitBinder</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">initBinder</span><span class="token punctuation">(</span>WebDataBinder binder<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// e.g., registering custom editors, formatters, or validators</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="validation-annotations">7. Validation Annotations</h2>
+<p>While not strictly “controller-layer” annotations, you’ll frequently see  <strong>Bean Validation</strong>  annotations from  <code>javax.validation</code>  or  <code>jakarta.validation</code>  (like  <code>@NotNull</code>,  <code>@Size</code>, etc.) used in combination with:</p>
+<ul>
+<li><strong>@Valid</strong>  or  <strong>@Validated</strong>  (Spring’s annotation or from  <code>javax.validation</code>).
+<ul>
+<li>
+<p>Placed on a method parameter (like  <code>@RequestBody</code>  or  <code>@ModelAttribute</code>) to trigger validation before the method is invoked.</p>
+</li>
+<li>
+<p>Example:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">"/users"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> User <span class="token function">createUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@Valid</span> <span class="token annotation punctuation">@RequestBody</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="putting-it-all-together-example">8. Putting It All Together: Example</h2>
+<p>Here’s a small example demonstrating various annotations together:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@RestController</span>
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/api"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@CrossOrigin</span><span class="token punctuation">(</span>origins <span class="token operator">=</span> <span class="token string">"http://localhost:3000"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">UserController</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/users"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> List<span class="token operator">&lt;</span>User<span class="token operator">&gt;</span> <span class="token function">getAllUsers</span><span class="token punctuation">(</span>
+            <span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"page"</span><span class="token punctuation">,</span> defaultValue<span class="token operator">=</span><span class="token string">"0"</span><span class="token punctuation">)</span> <span class="token keyword">int</span> page<span class="token punctuation">,</span> 
+            <span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"size"</span><span class="token punctuation">,</span> defaultValue<span class="token operator">=</span><span class="token string">"10"</span><span class="token punctuation">)</span> <span class="token keyword">int</span> size<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> userService<span class="token punctuation">.</span><span class="token function">findAll</span><span class="token punctuation">(</span>page<span class="token punctuation">,</span> size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/users/{id}"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> User <span class="token function">getUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@PathVariable</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">)</span> Long userId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> userService<span class="token punctuation">.</span><span class="token function">findById</span><span class="token punctuation">(</span>userId<span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">orElseThrow</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token keyword">new</span> <span class="token class-name">ResourceNotFoundException</span><span class="token punctuation">(</span><span class="token string">"User not found"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">"/users"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@ResponseStatus</span><span class="token punctuation">(</span>HttpStatus<span class="token punctuation">.</span>CREATED<span class="token punctuation">)</span>
+    <span class="token keyword">public</span> User <span class="token function">createUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@Valid</span> <span class="token annotation punctuation">@RequestBody</span> User user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> userService<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@PutMapping</span><span class="token punctuation">(</span><span class="token string">"/users/{id}"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> User <span class="token function">updateUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@PathVariable</span> Long id<span class="token punctuation">,</span> <span class="token annotation punctuation">@Valid</span> <span class="token annotation punctuation">@RequestBody</span> User updatedUser<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> userService<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>id<span class="token punctuation">,</span> updatedUser<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@DeleteMapping</span><span class="token punctuation">(</span><span class="token string">"/users/{id}"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@ResponseStatus</span><span class="token punctuation">(</span>HttpStatus<span class="token punctuation">.</span>NO_CONTENT<span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">deleteUser</span><span class="token punctuation">(</span><span class="token annotation punctuation">@PathVariable</span> Long id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        userService<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Global exception handler (optional)</span>
+<span class="token annotation punctuation">@RestControllerAdvice</span>
+<span class="token keyword">class</span> <span class="token class-name">GlobalExceptionHandler</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@ExceptionHandler</span><span class="token punctuation">(</span>ResourceNotFoundException<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> ResponseEntity<span class="token operator">&lt;</span>String<span class="token operator">&gt;</span> <span class="token function">handleResourceNotFound</span><span class="token punctuation">(</span>ResourceNotFoundException ex<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> ResponseEntity<span class="token punctuation">.</span><span class="token function">status</span><span class="token punctuation">(</span>HttpStatus<span class="token punctuation">.</span>NOT_FOUND<span class="token punctuation">)</span>
+                             <span class="token punctuation">.</span><span class="token function">body</span><span class="token punctuation">(</span>ex<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>Here, you see:</p>
+<ul>
+<li><code>@RestController</code>  +  <code>@RequestMapping</code>  at the class level.</li>
+<li><code>@GetMapping</code>,  <code>@PostMapping</code>,  <code>@PutMapping</code>,  <code>@DeleteMapping</code>  for specific endpoints.</li>
+<li><code>@PathVariable</code>  and  <code>@RequestParam</code>  for parameter binding.</li>
+<li><code>@RequestBody</code>  for request body.</li>
+<li><code>@Valid</code>  for validation.</li>
+<li><code>@ResponseStatus</code>  for setting custom status codes.</li>
+<li><code>@RestControllerAdvice</code>  and  <code>@ExceptionHandler</code>  for global exception handling.</li>
+<li><code>@CrossOrigin</code>  for enabling CORS.</li>
+</ul>
+<hr>
+<h2 id="conclusion">9. Conclusion</h2>
+<p>In the  <strong>controller layer</strong>  of a Spring Boot application, there are numerous annotations that:</p>
+<ol>
+<li><strong>Map requests</strong>  to controller methods (<code>@RequestMapping</code>,  <code>@GetMapping</code>, etc.).</li>
+<li><strong>Bind parameters</strong>  from query strings, path variables, request headers, cookies, and more (<code>@RequestParam</code>,  <code>@PathVariable</code>,  <code>@RequestHeader</code>, etc.).</li>
+<li><strong>Control response behavior</strong>  (e.g.,  <code>@ResponseBody</code>,  <code>@ResponseStatus</code>).</li>
+<li><strong>Manage session data</strong>  (<code>@SessionAttributes</code>,  <code>@SessionAttribute</code>).</li>
+<li><strong>Handle exceptions</strong>  (<code>@ExceptionHandler</code>,  <code>@ControllerAdvice</code>).</li>
+<li><strong>Configure data binding</strong>  (<code>@InitBinder</code>).</li>
+</ol>
+<p>Understanding each annotation’s role and how they interoperate is crucial for building well-structured and maintainable Spring MVC/Spring Boot applications. The annotations collectively provide a  <strong>highly declarative</strong>  way to handle HTTP requests, process data, and produce appropriate responses (HTML, JSON, XML, etc.), whether for a traditional web app (using  <code>@Controller</code>) or for RESTful services (using  <code>@RestController</code>).</p>
 
